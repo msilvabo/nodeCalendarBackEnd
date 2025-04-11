@@ -3,11 +3,14 @@
 // host + '/api/auth'
 
 const {Router} = require('express');
+const router = Router() ;
+
 const {check} = require('express-validator');
 const {fieldValidator} = require('../middlewares/fieldValidator')
-const router = Router() ;
+
 const { crearUsuario, loginUsuario, revalidarToken } = require('../controllers/auth');
-; 
+const {validarJWT} = require('../middlewares/validar_jwt');
+
  router.post(
         '/new',
         [
@@ -27,6 +30,10 @@ const { crearUsuario, loginUsuario, revalidarToken } = require('../controllers/a
         ],
         loginUsuario );
 
- router.get('/renew', revalidarToken );
+ router.get(
+        '/renew',
+        validarJWT,
+        revalidarToken
+    );
 
 module.exports = router;
